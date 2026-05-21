@@ -74,3 +74,21 @@ body {
   color: red;
   font-weight: bold;
 }
+@media (max-width: 768px) {
+
+  .dashboard {
+    flex-direction: column;
+  }
+
+  .form {
+    flex-direction: column;
+  }
+
+  .buttons {
+    flex-wrap: wrap;
+  }
+
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+}
