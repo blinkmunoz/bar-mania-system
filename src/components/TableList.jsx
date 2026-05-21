@@ -1,4 +1,4 @@
-function TableList({ orders }) {
+function TableList({ orders, closeOrder }) {
   return (
     <div>
       <h2>Comandas</h2>
@@ -17,6 +17,24 @@ function TableList({ orders }) {
           <p>
             Quantidade: {order.quantity}
           </p>
+
+          <p>
+            Total: R$ {order.total}
+          </p>
+
+          <p>
+            Status: {order.status}
+          </p>
+
+          {order.status === "Aberta" && (
+            <button
+              onClick={() =>
+                closeOrder(order.id)
+              }
+            >
+              Fechar Mesa
+            </button>
+          )}
         </div>
       ))}
     </div>

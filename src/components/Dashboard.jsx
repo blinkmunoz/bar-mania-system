@@ -27,44 +27,7 @@ function Dashboard({ products }) {
         <p>{lowStock}</p>
       </div>
     </div>
-
-    
   );
- 
-   
-
-return (
-  <div className="container">
-    <Header />
-
-    <Dashboard products={products} />
-
-    <SearchBar
-      search={search}
-      setSearch={setSearch}
-    />
-
-    <ProductForm addProduct={addProduct} />
-
-    {/* COMANDAS */}
-    <OrderForm
-      products={products}
-      createOrder={createOrder}
-    />
-
-    <TableList orders={orders} />
-
-    {/* LISTA DE PRODUTOS */}
-    <ProductList
-      products={filteredProducts}
-      removeProduct={removeProduct}
-      updateStock={updateStock}
-    />
-  </div>
-);
-
-
 }
-
 
 export default Dashboard;

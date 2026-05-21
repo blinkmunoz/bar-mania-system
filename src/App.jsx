@@ -12,30 +12,56 @@ function App() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [orders, setOrders] = useState([]);
+  const [darkMode, setDarkMode] = useState(false);
 
   // carregar localStorage
   useEffect(() => {
-    const saved = localStorage.getItem("products");
+    const savedProducts =
+      localStorage.getItem("products");
 
-    if (saved) {
-      setProducts(JSON.parse(saved));
+    const savedOrders =
+      localStorage.getItem("orders");
+
+    if (savedProducts) {
+      setProducts(JSON.parse(savedProducts));
+    }
+
+    if (savedOrders) {
+      setOrders(JSON.parse(savedOrders));
     }
   }, []);
 
-  // salvar localStorage
+  // salvar produtos
   useEffect(() => {
-    localStorage.setItem("products", JSON.stringify(products));
+    localStorage.setItem(
+      "products",
+      JSON.stringify(products)
+    );
   }, [products]);
 
+  // salvar comandas
+  useEffect(() => {
+    localStorage.setItem(
+      "orders",
+      JSON.stringify(orders)
+    );
+  }, [orders]);
+
+  // adicionar produto
   function addProduct(product) {
     setProducts([...products, product]);
   }
 
+  // remover produto
   function removeProduct(id) {
-    const updated = products.filter((p) => p.id !== id);
+    const updated = products.filter(
+      (p) => p.id !== id
+    );
+
     setProducts(updated);
   }
 
+  // atualizar estoque
   function updateStock(id, amount) {
     const updated = products.map((p) => {
       if (p.id === id) {
@@ -51,7 +77,12 @@ function App() {
     setProducts(updated);
   }
 
-  function createOrder(table, productId, quantity) {
+  // criar pedido/comanda
+  function createOrder(
+    table,
+    productId,
+    quantity
+  ) {
     const product = products.find(
       (p) => p.id === productId
     );
@@ -83,19 +114,57 @@ function App() {
       id: Date.now(),
       table,
       product: product.name,
-      quantity
+      quantity,
+      price: product.price,
+      total: product.price * quantity,
+      status: "Aberta"
     };
 
     setOrders([...orders, newOrder]);
   }
 
+  // fechar mesa
+  function closeOrder(id) {
+    const updated = orders.map((order) => {
+      if (order.id === id) {
+        return {
+          ...order,
+          status: "Fechada"
+        };
+      }
+
+      return order;
+    });
+
+    setOrders(updated);
+  }
+
+  // busca
   const filteredProducts = products.filter((p) =>
-    p.name.toLowerCase().includes(search.toLowerCase())
+    p.name
+      .toLowerCase()
+      .includes(search.toLowerCase())
   );
 
   return (
-    <div className="container">
+    <div
+      className={
+        darkMode
+          ? "container dark"
+          : "container"
+      }
+    >
       <Header />
+
+      <button
+        onClick={() =>
+          setDarkMode(!darkMode)
+        }
+      >
+        {darkMode
+          ? "Modo Claro"
+          : "Modo Escuro"}
+      </button>
 
       <Dashboard products={products} />
 
@@ -112,7 +181,10 @@ function App() {
         createOrder={createOrder}
       />
 
-      <TableList orders={orders} />
+      <TableList
+        orders={orders}
+        closeOrder={closeOrder}
+      />
 
       {/* PRODUTOS */}
       <ProductList

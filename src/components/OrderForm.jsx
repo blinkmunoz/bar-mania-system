@@ -8,6 +8,11 @@ function OrderForm({ products, createOrder }) {
   function handleSubmit(e) {
     e.preventDefault();
 
+    if (!table || !productId || !quantity) {
+      alert("Preencha todos os campos");
+      return;
+    }
+
     createOrder(
       table,
       Number(productId),
@@ -20,47 +25,53 @@ function OrderForm({ products, createOrder }) {
   }
 
   return (
-    <form className="form" onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Mesa"
-        value={table}
-        onChange={(e) => setTable(e.target.value)}
-      />
+    <>
+      <h2>Adicionar Mesa</h2>
 
-      <select
-        value={productId}
-        onChange={(e) =>
-          setProductId(e.target.value)
-        }
-      >
-        <option value="">
-          Selecione produto
-        </option>
+      <form className="form" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Mesa"
+          value={table}
+          onChange={(e) =>
+            setTable(e.target.value)
+          }
+        />
 
-        {products.map((product) => (
-          <option
-            key={product.id}
-            value={product.id}
-          >
-            {product.name}
+        <select
+          value={productId}
+          onChange={(e) =>
+            setProductId(e.target.value)
+          }
+        >
+          <option value="">
+            Selecione produto
           </option>
-        ))}
-      </select>
 
-      <input
-        type="number"
-        min="1"
-        value={quantity}
-        onChange={(e) =>
-          setQuantity(e.target.value)
-        }
-      />
+          {products.map((product) => (
+            <option
+              key={product.id}
+              value={product.id}
+            >
+              {product.name} - R$ {product.price}
+            </option>
+          ))}
+        </select>
 
-      <button type="submit">
-        Fazer Pedido
-      </button>
-    </form>
+        <input
+          type="number"
+          min="1"
+          value={quantity}
+          onChange={(e) =>
+            setQuantity(e.target.value)
+          }
+        />
+
+        <button type="submit">
+          Fazer Pedido
+        </button>
+      </form>
+    </>
   );
 }
 
